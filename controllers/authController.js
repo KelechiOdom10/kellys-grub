@@ -1,25 +1,22 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
+const ErrorResponse = require("../utils/errorResponse");
 const { generateAccessToken } = require("../utils/jwtGenerators");
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   if (!email || !password || !username) {
-    res.status(400);
-    res.json({
-      status: "error",
-      message: "Please fill all the necessary fields.",
-    });
+    return next(
+      new ErrorResponse("Please fill all the necessary fields.", 400)
+    );
   }
 
   try {
     const user = await User.findOne({ email });
 
     if (user) {
-      res.status(401);
-      res.json({ status: "error", message: "User already exists!" });
-      return;
+      return next(new ErrorResponse("User already exists!", 401));
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -37,40 +34,28 @@ const register = async (req, res) => {
       message: "User successfully created",
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ status: "error", message: "Internal Server Error!" });
-    throw new Error(error);
+    next(error);
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(400);
-    res.json({
-      status: "error",
-      message: "Please provide an email and password",
-    });
+    return next(new ErrorResponse("Please provide an email and password", 400));
   }
 
   try {
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
-      res.status(401);
-      res.json({
-        status: "error",
-        message: "User does not exist, please sign up!",
-      });
-      return;
+      return next(
+        new ErrorResponse("User does not exist, please sign up!", 401)
+      );
     }
 
     const isValid = bcrypt.compare(password, user.password);
     if (!isValid) {
-      res.status(401);
-      res.json({ status: "error", message: "Invalid credentials!" });
-      return;
+      return next(new ErrorResponse("Invalid credentials", 401));
     }
 
     const token = generateAccessToken({ user: { id: user.id } });
@@ -86,10 +71,7 @@ const login = async (req, res) => {
       token: `Bearer ${token}`,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ status: "error", message: "Internal Server Error!" });
-    throw new Error(error);
+    next(error);
   }
 };
 
