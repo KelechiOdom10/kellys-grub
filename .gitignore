@@ -14,6 +14,7 @@ node_modules/
 
 # misc
 config.env
+comments.js
 .DS_Store
 .env.local
 .env.development.local
