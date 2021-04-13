@@ -35,7 +35,7 @@ const register = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    res.status(200);
+    res.status(201);
     res.json({
       status: "success",
       message: "User successfully created",
@@ -187,7 +187,7 @@ const resetPassword = async (req, res, next) => {
 
     await user.save();
 
-    res.status(200);
+    res.status(201);
     res.json({
       status: "success",
       message:
