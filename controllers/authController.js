@@ -35,7 +35,7 @@ const register = async (req, res, next) => {
       password: hashedPassword,
     });
 
-    res.status(200);
+    res.status(201);
     res.json({
       status: "success",
       message: "User successfully created",
@@ -53,7 +53,7 @@ const login = async (req, res, next) => {
   }
 
   try {
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email });
     if (!user) {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
@@ -65,16 +65,14 @@ const login = async (req, res, next) => {
 
     const token = generateAccessToken({ id: user.id });
 
-    res.status(200);
-    res.json({
-      status: "success",
-      user: {
-        id: user.id,
-        username: user.username,
-        isAdmin: user.isAdmin,
-      },
-      token: `Bearer ${token}`,
-    });
+    res
+      .status(200)
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: isProduction,
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      })
+      .json({ status: "success", message: "Successfully logged in!" });
   } catch (error) {
     next(error);
   }
@@ -187,7 +185,7 @@ const resetPassword = async (req, res, next) => {
 
     await user.save();
 
-    res.status(200);
+    res.status(201);
     res.json({
       status: "success",
       message:
@@ -198,4 +196,16 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, forgotPassword, resetPassword };
+const logout = async (req, res, next) => {
+  res.cookie("token", "none", {
+    expires: new Date(0),
+    httpOnly: true,
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "Logged out successfully",
+  });
+};
+
+module.exports = { register, login, forgotPassword, resetPassword, logout };
