@@ -1,7 +1,7 @@
-import { Box } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/button";
 
 function App() {
-	return <Box>My name is Kelly</Box>;
+  return <Button colorScheme="primary">Sign up</Button>;
 }
 
 export default App;
