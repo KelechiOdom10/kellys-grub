@@ -1,3 +1,4 @@
+const express = require("express");
 const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
@@ -11,6 +12,11 @@ const serverUrl = !isProduction
   ? process.env.SERVER_URL_DEV
   : process.env.SERVER_URL_PROD;
 
+/**
+ *
+ * @param {express.Request} req
+ * @returns
+ */
 const cookieExtractor = req => {
   let token = null;
   if (req && req.cookies) {

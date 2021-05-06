@@ -1,5 +1,15 @@
 const ErrorResponse = require("../utils/errorResponse");
+const express = require("express");
 
+/**
+ * handles sending error responses,
+ * You are expected to set the error code on the response object
+ * @param  {object} err
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {null}
+ */
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
 
@@ -24,7 +34,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   res.status(err.statusCode || 500).json({
-    status: "error",
+    success: false,
     message: err.message || "Internal Server Error",
   });
 };
