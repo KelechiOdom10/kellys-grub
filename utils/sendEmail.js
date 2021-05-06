@@ -1,5 +1,9 @@
 const nodemailer = require("nodemailer");
 
+/**
+ *
+ * @param {{to:string, subject:string, html:string}} param0
+ */
 const sendEmail = async ({ to, subject, html }) => {
   const transporter = nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE,

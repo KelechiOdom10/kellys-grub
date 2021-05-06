@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const express = require("express");
 const User = require("../models/userModel");
 const ErrorResponse = require("../utils/errorResponse");
 const { generateAccessToken } = require("../utils/jwtGenerators");
@@ -10,14 +11,19 @@ const clientUrl = !isProduction
   ? process.env.CLIENT_URL_DEV
   : process.env.CLIENT_URL_PROD;
 
+/**
+ * @typedef {object} registerRequestBody
+ * @property {string} username
+ * @property {string} email
+ * @property {string} password
+ *
+ * @param {express.Request<{}, {}, registerRequestBody>} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns
+ */
 const register = async (req, res, next) => {
   const { username, email, password } = req.body;
-
-  if (!email || !password || !username) {
-    return next(
-      new ErrorResponse("Please fill all the necessary fields.", 400)
-    );
-  }
 
   try {
     const user = await User.findOne({ email });
@@ -37,7 +43,7 @@ const register = async (req, res, next) => {
 
     res.status(201);
     res.json({
-      status: "success",
+      success: true,
       message: "User successfully created",
     });
   } catch (error) {
@@ -45,20 +51,25 @@ const register = async (req, res, next) => {
   }
 };
 
+/**
+ * @typedef {object} loginRequestBody
+ * @property {string} email
+ * @property {string} password
+ *
+ * @param {express.Request<{},{}, loginRequestBody>} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns
+ */
 const login = async (req, res, next) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    return next(new ErrorResponse("Please provide an email and password", 400));
-  }
-
   try {
     const user = await User.findOne({ email });
     if (!user) {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
 
-    const isValid = bcrypt.compare(password, user.password);
+    const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
@@ -72,18 +83,23 @@ const login = async (req, res, next) => {
         secure: isProduction,
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       })
-      .json({ status: "success", message: "Successfully logged in!" });
+      .json({ success: true, message: "Successfully logged in!" });
   } catch (error) {
     next(error);
   }
 };
 
+/**
+ * @typedef {object} forgotPasswordRequestBody
+ * @property {string} email
+ *
+ * @param {express.Request<{},{}, forgotPasswordRequestBody>} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns
+ */
 const forgotPassword = async (req, res, next) => {
   const { email } = req.body;
-
-  if (!email) {
-    return next(new ErrorResponse("Please provide an email", 400));
-  }
 
   try {
     const user = await User.findOne({ email });
@@ -130,7 +146,7 @@ const forgotPassword = async (req, res, next) => {
 
       res.status(200);
       res.json({
-        status: "success",
+        success: true,
         message:
           "Email successfully sent. Please check your inbox to reset your password.",
       });
@@ -146,12 +162,17 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
+/**
+ * @typedef {object} resetPasswordRequestBody
+ * @property {string} password
+ *
+ * @param {express.Request<{},{}, resetPasswordRequestBody>} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns
+ */
 const resetPassword = async (req, res, next) => {
   const { password } = req.body;
-
-  if (!password) {
-    return next(new ErrorResponse("Please provide a password", 400));
-  }
 
   try {
     const user = await User.findOne({
@@ -187,7 +208,7 @@ const resetPassword = async (req, res, next) => {
 
     res.status(201);
     res.json({
-      status: "success",
+      success: true,
       message:
         "Password changed successfully. Please login with your new password.",
     });
@@ -196,6 +217,13 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
+/**
+ *
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns
+ */
 const logout = async (req, res, next) => {
   res.cookie("token", "none", {
     expires: new Date(0),
@@ -203,7 +231,7 @@ const logout = async (req, res, next) => {
   });
 
   res.status(200).json({
-    status: "success",
+    success: true,
     message: "Logged out successfully",
   });
 };
