@@ -11,6 +11,7 @@ dotenv.config({ path: "./config/config.env" });
 const isProduction = process.env.NODE_ENV === "production";
 
 const authRoute = require("./routes/authRoutes");
+const categoryRoute = require("./routes/categoryRoutes");
 const { isAuth, isAdmin } = require("./middleware/auth");
 
 const app = express();
@@ -34,6 +35,7 @@ mongoose
 require("./config/passport");
 
 app.use("/api/auth", authRoute);
+app.use("/api/category", categoryRoute);
 
 app.use(errorHandler);
 
