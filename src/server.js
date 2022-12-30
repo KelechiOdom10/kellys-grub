@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const PORT = process.env.PORT || 8080;
 
-dotenv.config({ path: "./config/config.env" });
+dotenv.config();
 
 const isProduction = process.env.NODE_ENV === "production";
 
