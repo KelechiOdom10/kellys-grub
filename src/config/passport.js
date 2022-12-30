@@ -1,10 +1,11 @@
-const express = require("express");
-const passport = require("passport");
+import express from "express";
+import passport from "passport";
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+
 const User = mongoose.model("User");
 
 const isProduction = process.env.NODE_ENV === "production";
