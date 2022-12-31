@@ -10,7 +10,7 @@
   "scripts": {
     "server": "ts-node-dev --respawn --transpile-only src/server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm run server\" \"cd client && npm run dev\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
