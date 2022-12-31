@@ -19,12 +19,12 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(passport.initialize());
 
+mongoose.set("strictQuery", false);
 mongoose
   .connect(
     !isProduction ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
     {
       useNewUrlParser: true,
-      useCreateIndex: true,
       useUnifiedTopology: true,
     }
   )
