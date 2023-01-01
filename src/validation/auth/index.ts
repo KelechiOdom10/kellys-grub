@@ -1,7 +1,7 @@
-const { body, validationResult } = require("express-validator");
-const express = require("express");
+import { NextFunction, Request, Response } from "express";
+import { body, validationResult } from "express-validator";
 
-exports.registerValidation = () => [
+export const registerValidation = () => [
   body("username")
     .isLength({ min: 5 })
     .withMessage("Username must be at least 5 chars long")
@@ -18,7 +18,7 @@ exports.registerValidation = () => [
     .escape(),
 ];
 
-exports.loginValidation = () => [
+export const loginValidation = () => [
   body("email")
     .isEmail()
     .withMessage("Email is not a valid email")
@@ -30,14 +30,14 @@ exports.loginValidation = () => [
     .escape(),
 ];
 
-exports.forgotPasswordValidation = () => [
+export const forgotPasswordValidation = () => [
   body("email")
     .isEmail()
     .withMessage("Email is not a valid email")
     .normalizeEmail(),
 ];
 
-exports.resetPasswordValidation = () => [
+export const resetPasswordValidation = () => [
   body("password")
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 chars long")
@@ -45,20 +45,13 @@ exports.resetPasswordValidation = () => [
     .escape(),
 ];
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns
- */
-exports.validate = (req, res, next) => {
+export const validate = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     return next();
   }
 
-  const extractedErrors = [];
+  const extractedErrors: Record<string, any>[] = [];
   errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }));
 
   return res.status(400).json({
