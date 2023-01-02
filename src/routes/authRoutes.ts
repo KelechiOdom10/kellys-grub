@@ -1,21 +1,21 @@
-const {
+import { Router, Request, Response } from "express";
+import passport from "passport";
+import {
   register,
   login,
   forgotPassword,
   resetPassword,
   logout,
-} = require("../controllers/authController");
-const express = require("express");
-const passport = require("passport");
-const { generateAccessToken } = require("../utils/jwtGenerators");
-const {
+} from "~/controllers/authController";
+import {
   registerValidation,
   validate,
   loginValidation,
   forgotPasswordValidation,
   resetPasswordValidation,
-} = require("../validation/auth/index");
-const router = express.Router();
+} from "~/validation/auth";
+
+const router = Router();
 
 const isProduction = process.env.NODE_ENV === "production";
 const clientUrl = !isProduction
@@ -43,7 +43,8 @@ router.route("/google/callback").get(
     failureRedirect: `${clientUrl}/login`,
     session: false,
   }),
-  (req, res) => {
+  (req: Request, res: Response) => {
+    // @ts-ignore
     const token = generateAccessToken({ id: req.user.id });
 
     res.cookie("token", token, {
@@ -67,7 +68,8 @@ router.route("/facebook/callback").get(
     failureRedirect: `${clientUrl}/login`,
     session: false,
   }),
-  (req, res) => {
+  (req: Request, res: Response) => {
+    // @ts-ignore
     const token = generateAccessToken({ id: req.user.id });
     res.cookie("token", token, {
       httpOnly: true,
@@ -80,4 +82,4 @@ router.route("/facebook/callback").get(
 
 router.route("/logout").post(logout);
 
-module.exports = router;
+export default router;
