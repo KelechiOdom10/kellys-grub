@@ -1,24 +1,20 @@
-import express from "express";
+import { Request } from "express";
 import passport from "passport";
-const JwtStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
-const GoogleStrategy = require("passport-google-oauth2").Strategy;
-const FacebookStrategy = require("passport-facebook").Strategy;
-import mongoose from "mongoose";
+import passportJwt from "passport-jwt";
+import passportGoogle from "passport-google-oauth2";
+import passportFacebook from "passport-facebook";
+import User from "~/models/userModel";
 
-const User = mongoose.model("User");
+const JwtStrategy = passportJwt.Strategy;
+const GoogleStrategy = passportGoogle.Strategy;
+const FacebookStrategy = passportFacebook.Strategy;
 
 const isProduction = process.env.NODE_ENV === "production";
 const serverUrl = !isProduction
   ? process.env.SERVER_URL_DEV
   : process.env.SERVER_URL_PROD;
 
-/**
- *
- * @param {express.Request} req
- * @returns
- */
-const cookieExtractor = req => {
+const cookieExtractor = (req: Request) => {
   let token = null;
   if (req && req.cookies) {
     token = req.cookies["token"];
@@ -26,9 +22,10 @@ const cookieExtractor = req => {
   return token;
 };
 
-const opts = {};
-opts.jwtFromRequest = cookieExtractor;
-opts.secretOrKey = process.env.ACCESS_TOKEN_SECRET;
+const opts: passportJwt.StrategyOptions = {
+  jwtFromRequest: cookieExtractor,
+  secretOrKey: process.env.ACCESS_TOKEN_SECRET,
+};
 
 passport.use(
   new JwtStrategy(opts, (payload, done) => {
@@ -50,7 +47,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: `${serverUrl}/api/${process.env.GOOGLE_CALLBACK_URL}`,
     },
-    (accessToken, refreshToken, profile, done) => {
+    (_accessToken, _refreshToken, profile, done) => {
       User.findOne({ googleId: profile.id })
         .then(currentUser => {
           if (currentUser) {
@@ -74,7 +71,7 @@ passport.use(
             return done(null, user);
           });
         })
-        .catch(err => done(null, false));
+        .catch(_err => done(null, false));
     }
   )
 );
@@ -87,7 +84,7 @@ passport.use(
       callbackURL: `${serverUrl}/api/${process.env.FACEBOOK_CALLBACK_URL}`,
       profileFields: ["id", "displayName", "name", "emails", "photos"],
     },
-    (accessToken, refreshToken, profile, done) => {
+    (accessToken, _refreshToken, profile, done) => {
       User.findOne({ facebookId: profile.id })
         .then(currentUser => {
           if (currentUser) {
@@ -98,7 +95,9 @@ passport.use(
             provider: "facebook",
             facebookId: profile.id,
             username: profile.displayName,
-            email: profile.emails ? profile.emails[0].value : null,
+            email: profile.emails
+              ? profile.emails[0].value
+              : profile._json.email,
             avatar: profile.photos
               ? profile.photos[0].value
               : `https://graph.facebook.com/${profile.id}/picture?width=200&height=200&access_token=${accessToken}&&redirect=false`,
@@ -113,7 +112,7 @@ passport.use(
             return done(null, user);
           });
         })
-        .catch(err => done(null, false));
+        .catch(_err => done(null, false));
     }
   )
 );

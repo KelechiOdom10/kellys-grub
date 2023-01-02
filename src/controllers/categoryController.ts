@@ -1,14 +1,12 @@
-const express = require("express");
-const Category = require("../models/categoryModel");
-const ErrorResponse = require("../utils/errorResponse");
+import { Request, Response, NextFunction } from "express";
+import { ErrorResponse } from "~/utils/errorResponse";
+import Category from "../models/categoryModel";
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- */
-const getAllCategories = async (req, res, next) => {
+export const getAllCategories = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const categories = await Category.find({});
     res.status(200).json({ success: true, data: categories });
@@ -17,13 +15,11 @@ const getAllCategories = async (req, res, next) => {
   }
 };
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- */
-const getCategoryById = async (req, res, next) => {
+export const getCategoryById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const category = await Category.findById(req.params.id);
     if (!category) {
@@ -35,15 +31,11 @@ const getCategoryById = async (req, res, next) => {
   }
 };
 
-/**
- * @typedef {object} createCategoryRequestBody
- * @property {string} name
- *
- * @param {express.Request<{}, {}, createCategoryRequestBody>} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- */
-const createCategory = async (req, res, next) => {
+export const createCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { name } = req.body;
 
   if (!name) {
@@ -71,15 +63,11 @@ const createCategory = async (req, res, next) => {
   }
 };
 
-/**
- * @typedef {object} updateCategoryRequestBody
- * @property {string} name
- *
- * @param {express.Request<{}, {}, updateCategoryRequestBody>} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- */
-const updateCategoryById = async (req, res, next) => {
+export const updateCategoryById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { id } = req.params;
   try {
     const category = await Category.findById(id);
@@ -97,13 +85,11 @@ const updateCategoryById = async (req, res, next) => {
   }
 };
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- */
-const deleteCategoryById = async (req, res, next) => {
+export const deleteCategoryById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { id } = req.params;
   try {
     const category = await Category.findById(id);
@@ -116,12 +102,4 @@ const deleteCategoryById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
-
-module.exports = {
-  getAllCategories,
-  getCategoryById,
-  createCategory,
-  updateCategoryById,
-  deleteCategoryById,
 };
