@@ -1,10 +1,12 @@
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
 
-/**
- *
- * @param {{to:string, subject:string, html:string}} param0
- */
-const sendEmail = async ({ to, subject, html }) => {
+interface EmailParams {
+  to: string;
+  subject: string;
+  html: string;
+}
+
+export const sendEmail = async ({ to, subject, html }: EmailParams) => {
   const transporter = nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE,
     auth: {
@@ -28,5 +30,3 @@ const sendEmail = async ({ to, subject, html }) => {
     }
   });
 };
-
-module.exports = sendEmail;
