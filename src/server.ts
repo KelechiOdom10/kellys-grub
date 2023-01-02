@@ -1,18 +1,20 @@
-const dotenv = require("dotenv");
-const cookieParser = require("cookie-parser");
-const errorHandler = require("./middleware/error");
-const express = require("express");
-const mongoose = require("mongoose");
-const passport = require("passport");
-const PORT = process.env.PORT || 8080;
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import express from "express";
+import mongoose from "mongoose";
+import passport from "passport";
+import { errorHandler } from "./middleware/error";
+import authRoute from "./routes/authRoutes";
+import categoryRoute from "./routes/categoryRoutes";
+import { isAuth } from "./middleware/auth";
+import { isProduction } from "./constants";
 
 dotenv.config();
 
-const isProduction = process.env.NODE_ENV === "production";
-
-const authRoute = require("./routes/authRoutes");
-const categoryRoute = require("./routes/categoryRoutes");
-const { isAuth, isAdmin } = require("./middleware/auth");
+const PORT = process.env.PORT || 8080;
+const MONGO_URL = !isProduction
+  ? process.env.MONGO_URI_DEV
+  : process.env.MONGO_URI_PROD;
 
 const app = express();
 app.use(cookieParser());
@@ -21,13 +23,7 @@ app.use(passport.initialize());
 
 mongoose.set("strictQuery", false);
 mongoose
-  .connect(
-    !isProduction ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(MONGO_URL)
   .then(() => console.log("DB connected successfully"))
   .catch(err => console.error(err));
 
@@ -40,7 +36,7 @@ app.use("/api/category", categoryRoute);
 app.use(errorHandler);
 
 // TEST ROUTES
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.status(200);
   res.json({ message: "API working, ya dig" });
 });
@@ -53,7 +49,7 @@ const server = app.listen(PORT, () =>
   console.log(`Sever running on port ${PORT}`)
 );
 
-process.on("unhandledRejection", (err, promise) => {
+process.on("unhandledRejection", (err: any) => {
   console.log(`Logged Error: ${err.message}`);
   server.close(() => process.exit(1));
 });
