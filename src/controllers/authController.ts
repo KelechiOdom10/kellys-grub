@@ -1,28 +1,22 @@
-const bcrypt = require("bcrypt");
-const crypto = require("crypto");
-const express = require("express");
-const User = require("../models/userModel");
-const ErrorResponse = require("../utils/errorResponse");
-const { generateAccessToken } = require("../utils/jwtGenerators");
-const sendEmail = require("../utils/sendEmail");
+import { Request, Response, NextFunction } from "express";
+import bcrypt from "bcrypt";
+import crypto from "crypto";
+import User from "~/models/userModel";
+import { sendEmail } from "~/utils/sendEmail";
+import { ErrorResponse } from "~/utils/errorResponse";
+import { generateAccessToken } from "~/utils/jwtGenerators";
+import { EMAIL_PROVIDER } from "~/constants";
 
 const isProduction = process.env.NODE_ENV === "production";
 const clientUrl = !isProduction
   ? process.env.CLIENT_URL_DEV
   : process.env.CLIENT_URL_PROD;
 
-/**
- * @typedef {object} registerRequestBody
- * @property {string} username
- * @property {string} email
- * @property {string} password
- *
- * @param {express.Request<{}, {}, registerRequestBody>} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns
- */
-const register = async (req, res, next) => {
+export const register = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { username, email, password } = req.body;
 
   try {
@@ -51,17 +45,11 @@ const register = async (req, res, next) => {
   }
 };
 
-/**
- * @typedef {object} loginRequestBody
- * @property {string} email
- * @property {string} password
- *
- * @param {express.Request<{},{}, loginRequestBody>} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns
- */
-const login = async (req, res, next) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -69,7 +57,16 @@ const login = async (req, res, next) => {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
 
-    const isValid = await bcrypt.compare(password, user.password);
+    if (user && user.provider !== EMAIL_PROVIDER.Email) {
+      return next(
+        new ErrorResponse(
+          `That email address is already in use using ${user.provider} provider.`,
+          400
+        )
+      );
+    }
+
+    const isValid = await bcrypt.compare(password, user.password!);
     if (!isValid) {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
@@ -89,16 +86,11 @@ const login = async (req, res, next) => {
   }
 };
 
-/**
- * @typedef {object} forgotPasswordRequestBody
- * @property {string} email
- *
- * @param {express.Request<{},{}, forgotPasswordRequestBody>} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns
- */
-const forgotPassword = async (req, res, next) => {
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { email } = req.body;
 
   try {
@@ -111,6 +103,12 @@ const forgotPassword = async (req, res, next) => {
           404
         )
       );
+    }
+
+    if (user && user.provider !== EMAIL_PROVIDER.Email) {
+      return res.status(400).send({
+        error: `That email address is already in use using ${user.provider} provider.`,
+      });
     }
 
     const resetToken = crypto.randomBytes(18).toString("hex");
@@ -162,16 +160,11 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
-/**
- * @typedef {object} resetPasswordRequestBody
- * @property {string} password
- *
- * @param {express.Request<{},{}, resetPasswordRequestBody>} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns
- */
-const resetPassword = async (req, res, next) => {
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { password } = req.body;
 
   try {
@@ -217,14 +210,11 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
-/**
- *
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns
- */
-const logout = async (req, res, next) => {
+export const logout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   res.cookie("token", "none", {
     expires: new Date(0),
     httpOnly: true,
@@ -235,5 +225,3 @@ const logout = async (req, res, next) => {
     message: "Logged out successfully",
   });
 };
-
-module.exports = { register, login, forgotPassword, resetPassword, logout };
