@@ -1,11 +1,30 @@
-const mongoose = require("mongoose");
+import { Schema, model, Document } from "mongoose";
+import { EMAIL_PROVIDER } from "~/constants";
 
-const userSchema = new mongoose.Schema(
+export interface IUser {
+  provider: string;
+  username: string;
+  email: string;
+  password?: string;
+  avatar: string;
+  isAdmin: boolean;
+  googleId?: string;
+  facebookId?: string;
+  resetPasswordToken?: string;
+  resetPasswordTokenExpiry?: number;
+}
+
+export interface UserDocument extends IUser, Document {
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const userSchema = new Schema<IUser>(
   {
     provider: {
       type: String,
       required: true,
-      default: "email",
+      default: EMAIL_PROVIDER.Email,
     },
     username: {
       type: String,
@@ -14,15 +33,10 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       trim: true,
-      required: [
-        () => {
-          return this.provider !== "email" ? false : true;
-        },
-        "Please enter an email address",
-      ],
+      unique: true,
+      required: true,
       minlength: 5,
       maxlength: 255,
-      unique: true,
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)+(\.\w{2,3})+$/,
         "Please enter a valid email address",
@@ -32,12 +46,10 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       trim: true,
-      required: [
-        function () {
-          return this.provider === "email";
-        },
-        "Password is required",
-      ],
+      required: function () {
+        // @ts-ignore
+        return this.provider === "email";
+      },
       minlength: [6, "Password must be at least 6 characters long"],
     },
     avatar: String,
@@ -58,11 +70,11 @@ const userSchema = new mongoose.Schema(
       select: false,
     },
     resetPasswordToken: String,
-    resetPasswordTokenExpiry: Date,
+    resetPasswordTokenExpiry: Number,
   },
   { timestamps: true }
 );
 
-const User = mongoose.model("User", userSchema);
+const User = model<UserDocument>("User", userSchema);
 
-module.exports = User;
+export default User;
