@@ -1,7 +1,7 @@
-import { Button } from "@chakra-ui/react";
+import { Button } from "@mantine/core";
 
 function App() {
-  return <Button colorScheme="primary">Sign up</Button>;
+  return <Button>Sign up</Button>;
 }
 
 export default App;

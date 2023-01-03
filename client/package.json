@@ -9,10 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@chakra-ui/react": "^2.4.6",
     "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
-    "framer-motion": "^6.5.1",
+    "@mantine/carousel": "^5.9.6",
+    "@mantine/core": "^5.9.6",
+    "@mantine/hooks": "^5.9.6",
+    "@mantine/modals": "^5.9.6",
+    "@mantine/notifications": "^5.9.6",
+    "embla-carousel-react": "^7.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
