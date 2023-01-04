@@ -1,6 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorResponse } from "~/utils/errorResponse";
-import Category from "../models/categoryModel";
+import Category from "~/models/categoryModel";
+import { zParse } from "~/middleware/validate";
+import {
+  CreateCategorySchema,
+  RequestWithIdParams,
+  UpdateCategorySchema,
+} from "~/validation/category";
 
 export const getAllCategories = async (
   _req: Request,
@@ -21,7 +27,30 @@ export const getCategoryById = async (
   next: NextFunction
 ) => {
   try {
-    const category = await Category.findById(req.params.id);
+    const {
+      params: { id },
+    } = await zParse(RequestWithIdParams, req, res);
+
+    const category = await Category.findById(id);
+
+    if (!category) {
+      return next(new ErrorResponse("No category found", 404));
+    }
+
+    res.status(202).json({ success: true, data: category });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getCategoryByName = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { name } = req.params;
+    const category = await Category.findOne({ name });
     if (!category) {
       return next(new ErrorResponse("No category found", 404));
     }
@@ -36,11 +65,9 @@ export const createCategory = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name } = req.body;
-
-  if (!name) {
-    res.status(400).json({ error: "You must enter a category name." });
-  }
+  const {
+    body: { name, imageUrl },
+  } = await zParse(CreateCategorySchema, req, res);
 
   try {
     const category = await Category.findOne({ name });
@@ -51,6 +78,7 @@ export const createCategory = async (
 
     await Category.create({
       name,
+      imageUrl,
     });
 
     res.status(201);
@@ -68,14 +96,18 @@ export const updateCategoryById = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const {
+    params: { id },
+    body,
+  } = await zParse(UpdateCategorySchema, req, res);
+
   try {
     const category = await Category.findById(id);
     if (!category) {
       return next(new ErrorResponse("No category found", 404));
     }
 
-    await Category.findByIdAndUpdate(id, req.body);
+    await Category.findByIdAndUpdate(id, body);
 
     res
       .status(200)
@@ -90,7 +122,10 @@ export const deleteCategoryById = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id } = req.params;
+  const {
+    params: { id },
+  } = await zParse(RequestWithIdParams, req, res);
+
   try {
     const category = await Category.findById(id);
     if (!category) {

@@ -1,8 +1,8 @@
 import { Schema, model, Document } from "mongoose";
-import { EMAIL_PROVIDER } from "~/constants";
+import { EmailProvider } from "~/constants";
 
 export interface IUser {
-  provider: string;
+  provider: EmailProvider;
   username: string;
   email: string;
   password?: string;
@@ -24,7 +24,7 @@ const userSchema = new Schema<IUser>(
     provider: {
       type: String,
       required: true,
-      default: EMAIL_PROVIDER.Email,
+      default: "Email",
     },
     username: {
       type: String,

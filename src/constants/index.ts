@@ -18,4 +18,5 @@ export const EMAIL_PROVIDER = {
   Email: "Email",
   Google: "Google",
   Facebook: "Facebook",
-};
+} as const;
+export type EmailProvider = keyof typeof EMAIL_PROVIDER;

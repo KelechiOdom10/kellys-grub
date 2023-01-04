@@ -2,6 +2,7 @@ import { Schema, model, Document } from "mongoose";
 
 export interface ICategory {
   name: string;
+  imageUrl: string;
 }
 
 export interface CategoryDocument extends ICategory, Document {

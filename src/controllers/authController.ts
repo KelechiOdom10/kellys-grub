@@ -6,6 +6,13 @@ import { sendEmail } from "~/utils/sendEmail";
 import { ErrorResponse } from "~/utils/errorResponse";
 import { generateAccessToken } from "~/utils/jwtGenerators";
 import { EMAIL_PROVIDER } from "~/constants";
+import { zParse } from "~/middleware/validate";
+import {
+  ForgotPasswordSchema,
+  LoginSchema,
+  RegisterSchema,
+  ResetPasswordSchema,
+} from "~/validation/auth";
 
 const isProduction = process.env.NODE_ENV === "production";
 const clientUrl = !isProduction
@@ -17,7 +24,9 @@ export const register = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { username, email, password } = req.body;
+  const {
+    body: { email, password, username },
+  } = await zParse(RegisterSchema, req, res);
 
   try {
     const user = await User.findOne({ email });
@@ -50,9 +59,13 @@ export const login = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { email, password } = req.body;
+  const {
+    body: { email, password },
+  } = await zParse(LoginSchema, req, res);
+
   try {
     const user = await User.findOne({ email });
+
     if (!user) {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
@@ -91,7 +104,9 @@ export const forgotPassword = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { email } = req.body;
+  const {
+    body: { email },
+  } = await zParse(ForgotPasswordSchema, req, res);
 
   try {
     const user = await User.findOne({ email });
@@ -165,7 +180,9 @@ export const resetPassword = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { password } = req.body;
+  const {
+    body: { password },
+  } = await zParse(ResetPasswordSchema, req, res);
 
   try {
     const user = await User.findOne({
