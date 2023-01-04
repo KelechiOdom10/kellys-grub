@@ -1,6 +1,7 @@
 export interface IErrorResponse {
   name: string;
   message: string | string[];
+  value?: string;
   stack?: string | undefined;
   statusCode?: number;
   code?: number;

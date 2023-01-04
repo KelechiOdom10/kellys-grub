@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ErrorResponse, IErrorResponse } from "~/utils/errorResponse";
 
 export const errorHandler = (
   err: IErrorResponse,
   _req: Request,
-  res: Response
+  res: Response,
+  _next: NextFunction
 ) => {
   let error = { ...err };
 
@@ -12,7 +13,10 @@ export const errorHandler = (
 
   //? Mongoose bad ObjectId
   if (err.name === "CastError") {
-    error = new ErrorResponse("Resource not found", 404);
+    error = new ErrorResponse(
+      `Resource not found with id of ${err.value}`,
+      404
+    );
   }
 
   //? Mongoose Duplicate key
@@ -31,8 +35,8 @@ export const errorHandler = (
     }
   }
 
-  res.status(err.statusCode || 500).json({
+  return res.status(error.statusCode || 500).json({
     success: false,
-    message: err.message || "Internal Server Error",
+    message: error.message || "Internal Server Error",
   });
 };
