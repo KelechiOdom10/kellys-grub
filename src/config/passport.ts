@@ -30,6 +30,7 @@ const opts: passportJwt.StrategyOptions = {
 passport.use(
   new JwtStrategy(opts, (payload, done) => {
     User.findById(payload.id)
+      .select("-password -updatedAt -createdAt")
       .then(user => {
         if (user) {
           return done(null, user);
@@ -55,9 +56,9 @@ passport.use(
           }
 
           const newUser = new User({
-            provider: "google",
+            provider: "Google",
             googleId: profile.id,
-            username: profile.displayName,
+            fullName: profile.displayName,
             email: profile.email,
             avatar: profile.picture,
             password: null,
@@ -92,9 +93,9 @@ passport.use(
           }
 
           const newUser = new User({
-            provider: "facebook",
+            provider: "Facebook",
             facebookId: profile.id,
-            username: profile.displayName,
+            fullName: profile.displayName,
             email: profile.emails
               ? profile.emails[0].value
               : profile._json.email,
