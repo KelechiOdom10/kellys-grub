@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 import authRoute from "./routes/authRoutes";
 import categoryRoute from "./routes/categoryRoutes";
+import productRoute from "./routes/productRoutes";
 import { isAuth } from "./middleware/auth";
 import { isProduction } from "./constants";
 import { errorHandler } from "./middleware/error";
@@ -35,6 +36,7 @@ require("./config/passport");
 
 app.use("/api/auth", authRoute);
 app.use("/api/category", categoryRoute);
+app.use("/api/product", productRoute);
 
 // TEST ROUTES
 app.get("/", (_req, res: Response) => {

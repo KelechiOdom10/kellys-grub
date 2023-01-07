@@ -3,7 +3,7 @@ import { EmailProvider } from "~/constants";
 
 export interface IUser {
   provider: EmailProvider;
-  username: string;
+  fullName: string;
   email: string;
   password?: string;
   avatar: string;
@@ -26,9 +26,9 @@ const userSchema = new Schema<IUser>(
       required: true,
       default: "Email",
     },
-    username: {
+    fullName: {
       type: String,
-      required: [true, "Please enter a username"],
+      required: [true, "Please enter full name"],
     },
     email: {
       type: String,

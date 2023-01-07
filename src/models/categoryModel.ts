@@ -1,8 +1,11 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
 export interface ICategory {
   name: string;
+  description?: string;
   imageUrl: string;
+  slug: string;
+  products: Types.ObjectId[];
 }
 
 export interface CategoryDocument extends ICategory, Document {
@@ -10,15 +13,34 @@ export interface CategoryDocument extends ICategory, Document {
   updatedAt: Date;
 }
 
-const categorySchema = new Schema(
+const categorySchema = new Schema<ICategory>(
   {
     name: {
       type: String,
       required: true,
-      maxLength: 32,
+      maxLength: 50,
       trim: true,
       unique: true,
     },
+    description: {
+      type: String,
+      trim: true,
+    },
+    imageUrl: {
+      type: String,
+      trim: true,
+    },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    products: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
   },
   { timestamps: true }
 );
