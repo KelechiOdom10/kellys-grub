@@ -1,12 +1,15 @@
 import { Request, Response, NextFunction } from "express";
+import slugify from "slugify";
 import { ErrorResponse } from "~/utils/errorResponse";
 import Category from "~/models/categoryModel";
 import { zParse } from "~/middleware/validate";
 import {
   CreateCategorySchema,
-  RequestWithIdParams,
   UpdateCategorySchema,
 } from "~/validation/category";
+import { IProduct } from "~/models/productModel";
+import { RequestWithIdParams } from "~/common/schema";
+import { customSlugify } from "~/utils/slugify";
 
 export const getAllCategories = async (
   _req: Request,
@@ -14,7 +17,7 @@ export const getAllCategories = async (
   next: NextFunction
 ) => {
   try {
-    const categories = await Category.find({});
+    const categories = await Category.find().select("-products");
     res.status(200).json({ success: true, data: categories });
   } catch (error) {
     next(error);
@@ -43,18 +46,23 @@ export const getCategoryById = async (
   }
 };
 
-export const getCategoryByName = async (
+export const getCategoryBySlug = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { name } = req.params;
-    const category = await Category.findOne({ name });
-    if (!category) {
+    const { slug } = req.params;
+    const categoryWithProducts = await Category.findOne({ slug })
+      .populate<{
+        products: IProduct[];
+      }>("products")
+      .exec();
+
+    if (!categoryWithProducts) {
       return next(new ErrorResponse("No category found", 404));
     }
-    res.status(202).json({ success: true, data: category });
+    res.status(202).json({ success: true, data: categoryWithProducts });
   } catch (error) {
     next(error);
   }
@@ -66,7 +74,7 @@ export const createCategory = async (
   next: NextFunction
 ) => {
   const {
-    body: { name, imageUrl },
+    body: { name, imageUrl, description },
   } = await zParse(CreateCategorySchema, req, res);
 
   try {
@@ -76,9 +84,13 @@ export const createCategory = async (
       return next(new ErrorResponse("Category already exists!", 401));
     }
 
+    const slug = customSlugify(name);
+
     await Category.create({
       name,
+      description,
       imageUrl,
+      slug,
     });
 
     res.status(201);
@@ -107,7 +119,9 @@ export const updateCategoryById = async (
       return next(new ErrorResponse("No category found", 404));
     }
 
-    await Category.findByIdAndUpdate(id, body);
+    const newBody = body.name ? { ...body, slug: slugify(body.name) } : body;
+
+    await Category.findByIdAndUpdate(id, newBody);
 
     res
       .status(200)
