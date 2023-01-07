@@ -2,10 +2,11 @@ import { Schema, model, Types } from "mongoose";
 
 export interface IProduct {
   name: string;
+  slug: string;
   description: string;
   price: number;
   imageUrl: string;
-  categoryId: Types.ObjectId;
+  category: Types.ObjectId;
   isActive: boolean;
   sold: number;
   onSale: boolean;
@@ -22,8 +23,13 @@ const productSchema = new Schema(
     name: {
       type: String,
       required: true,
-      maxLength: 32,
+      maxLength: 50,
       trim: true,
+    },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
     },
     description: {
       type: String,
@@ -39,7 +45,7 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    categoryId: {
+    category: {
       type: Schema.Types.ObjectId,
       ref: "Category",
       required: true,
