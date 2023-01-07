@@ -3,10 +3,7 @@ import normalizeEmail from "validator/lib/normalizeEmail";
 
 export const RegisterSchema = z.object({
   body: z.object({
-    username: z
-      .string()
-      .min(5, "Username must be at least 5 chars long")
-      .trim(),
+    fullName: z.string().min(1, "fullName is required").trim(),
     email: z
       .string()
       .email("Email is not a valid email")

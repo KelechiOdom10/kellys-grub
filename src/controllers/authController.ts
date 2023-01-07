@@ -25,7 +25,7 @@ export const register = async (
   next: NextFunction
 ) => {
   const {
-    body: { email, password, username },
+    body: { email, password, fullName },
   } = await zParse(RegisterSchema, req, res);
 
   try {
@@ -39,7 +39,7 @@ export const register = async (
     const hashedPassword = await bcrypt.hash(password, salt);
 
     await User.create({
-      username,
+      fullName,
       email,
       password: hashedPassword,
     });
