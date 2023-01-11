@@ -29,6 +29,7 @@ export const Default: Story = {
     placeholder: "Please enter a valid email address",
     helperText: "Your email will not be shared with anyone",
     size: "md",
+    id: "email",
   },
 };
 
