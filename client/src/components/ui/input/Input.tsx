@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, ReactNode } from "react";
+import { FC, InputHTMLAttributes, ReactNode } from "react";
 import { cva } from "class-variance-authority";
 import type { VariantProps } from "class-variance-authority";
 
@@ -25,7 +25,7 @@ type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> &
     label?: string;
   };
 
-export const Input = ({
+export const Input: FC<InputProps> = ({
   label,
   helperText,
   size = "md",
@@ -34,7 +34,7 @@ export const Input = ({
   disabled,
   id,
   ...props
-}: InputProps) => {
+}) => {
   return (
     <div className="flex-col space-y-1.5 tracking-wide">
       {label && (
@@ -47,6 +47,7 @@ export const Input = ({
         </label>
       )}
       <input
+        id={id}
         required={required}
         disabled={disabled}
         aria-invalid={!!error}

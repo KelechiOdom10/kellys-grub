@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "./Button";
+import { Plus } from "~/components/icons/Plus";
+import { ShoppingCart } from "~/components/icons/ShoppingCart";
 
 const meta: Meta<typeof Button> = {
   /* 👇 The title prop is optional.
@@ -40,19 +42,41 @@ export const Primary: Story = {
   },
 };
 
-export const Icon: Story = {
+export const PrimaryWithIcon: Story = {
   args: {
     ...Primary.args,
     children: "Icon Button",
-    leftIcon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="w-4 h-4"
-      >
-        <path d="M13.75 7h-3v5.296l1.943-2.048a.75.75 0 011.114 1.004l-3.25 3.5a.75.75 0 01-1.114 0l-3.25-3.5a.75.75 0 111.114-1.004l1.943 2.048V7h1.5V1.75a.75.75 0 00-1.5 0V7h-3A2.25 2.25 0 004 9.25v7.5A2.25 2.25 0 006.25 19h7.5A2.25 2.25 0 0016 16.75v-7.5A2.25 2.25 0 0013.75 7z" />
-      </svg>
-    ),
+    rightIcon: <Plus />,
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    ...Primary.args,
+    intent: "secondary",
+  },
+};
+
+export const Dark: Story = {
+  args: {
+    ...Primary.args,
+    intent: "dark",
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    ...Primary.args,
+    intent: "ghost",
+  },
+};
+
+export const IconButton: Story = {
+  args: {
+    ...Primary.args,
+    children: null,
+    intent: "ghost",
+    size: "icon",
+    rightIcon: <ShoppingCart />,
   },
 };

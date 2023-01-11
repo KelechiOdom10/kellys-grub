@@ -20,12 +20,12 @@
   }
 
   body {
-    @apply bg-neutral text-dark text-sm md:text-base;
+    @apply relative bg-neutral text-sm text-dark md:text-base;
   }
 }
 
 @layer components {
   input[aria-invalid="true"] {
-    @apply border-red-500 text-red-600 focus:border-red-500 focus:ring-red-500;
+    @apply border-red-500 text-red-600 focus:border-red-500 focus:ring-red-50;
   }
 }
