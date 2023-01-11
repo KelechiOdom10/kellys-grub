@@ -2,28 +2,25 @@ import { FC, HTMLAttributes, ReactNode, useMemo } from "react";
 import { VariantProps, cva } from "class-variance-authority";
 import { IndicatorPosition, getPositionStyles } from "./Indicator.types";
 
-const styles = cva(
-  "absolute flex align-middle text-xs justify-center z-[100]",
-  {
-    variants: {
-      color: {
-        brand: "bg-brand text-white border-brand",
-        secondary: "bg-secondary text-white border-secondary",
-        dark: "bg-dark text-white border-dark",
-        white: "bg-white text-dark border-white",
-      },
-      withBorder: {
-        true: "border-2 border-neutral",
-      },
-      withLabel: {
-        true: "px-1.5 py-0",
-      },
+const styles = cva("absolute flex align-middle text-xs justify-center z-[100]", {
+  variants: {
+    color: {
+      brand: "bg-brand text-white border-brand",
+      secondary: "bg-secondary text-white border-secondary",
+      dark: "bg-dark text-white border-dark",
+      white: "bg-white text-dark border-white",
     },
-    defaultVariants: {
-      color: "secondary",
+    withBorder: {
+      true: "border-2 border-neutral",
     },
-  }
-);
+    withLabel: {
+      true: "px-1.5 py-0",
+    },
+  },
+  defaultVariants: {
+    color: "secondary",
+  },
+});
 type IndicatorVariantProps = VariantProps<typeof styles>;
 
 interface IndicatorProps
@@ -49,7 +46,7 @@ export const Indicator: FC<IndicatorProps> = ({
   rounded = "full",
 }) => {
   return (
-    <div className={`relative inline-block z-0`}>
+    <div className={`relative z-0 inline-block`}>
       {!disabled && (
         <div
           className={`${styles({
@@ -57,11 +54,7 @@ export const Indicator: FC<IndicatorProps> = ({
             withBorder,
             withLabel: !!label,
             className,
-          })} ${
-            label ? "min-w-" : "w-"
-          }[${size}px] h-[${size}px] ${getPositionStyles(
-            position
-          )} rounded-${rounded}`}
+          })} ${label ? "min-w-" : "w-"}[${size}px] h-[${size}px] ${getPositionStyles(position)} rounded-${rounded}`}
           style={{
             padding: `${label ? "0 0.375rem" : size / 5}px`,
           }}

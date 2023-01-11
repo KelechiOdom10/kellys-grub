@@ -1,10 +1,6 @@
 import { SVGComponent } from "~/types";
 
-const ChevronRight: SVGComponent = ({
-  width = "18",
-  height = "18",
-  ...props
-}) => {
+const ChevronRight: SVGComponent = ({ width = "18", height = "18", ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

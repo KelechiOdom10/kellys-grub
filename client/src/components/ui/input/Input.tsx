@@ -25,25 +25,12 @@ type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> &
     label?: string;
   };
 
-export const Input: FC<InputProps> = ({
-  label,
-  helperText,
-  size = "md",
-  required,
-  error,
-  disabled,
-  id,
-  ...props
-}) => {
+export const Input: FC<InputProps> = ({ label, helperText, size = "md", required, error, disabled, id, ...props }) => {
   return (
     <div className="flex-col space-y-1.5 tracking-wide">
       {label && (
-        <label
-          className="block pl-1 font-semibold text-sm md:text-md"
-          htmlFor={id}
-        >
-          {label}{" "}
-          {required && <span className="text-red-500 align-middle">*</span>}
+        <label className="md:text-md block pl-1 text-sm font-semibold" htmlFor={id}>
+          {label} {required && <span className="align-middle text-red-500">*</span>}
         </label>
       )}
       <input
@@ -60,9 +47,7 @@ export const Input: FC<InputProps> = ({
           {error}
         </p>
       )}
-      {helperText && !error && (
-        <p className="text-sm text-gray-500">{helperText}</p>
-      )}
+      {helperText && !error && <p className="text-sm text-gray-500">{helperText}</p>}
     </div>
   );
 };
