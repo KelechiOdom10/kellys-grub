@@ -18,7 +18,7 @@ export const Breadcrumbs: FC<Props> = ({ transparent, items, separator = "/", ..
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li className="inline-flex items-center">
+            <li key={index} className="inline-flex items-center">
               <a
                 href={item.href}
                 className={`text-xs md:text-[15px] ${
