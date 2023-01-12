@@ -1,14 +1,14 @@
 module.exports = {
-  "stories": ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  "addons": ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-interactions"],
-  "framework": {
+  stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
+  addons: ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-interactions"],
+  framework: {
     name: "@storybook/react-vite",
-    options: {}
+    options: {},
   },
-  "features": {
-    "storyStoreV7": true
+  features: {
+    storyStoreV7: true,
   },
   docs: {
-    autodocs: true
-  }
+    autodocs: true,
+  },
 };

@@ -1,0 +1,12 @@
+.eslintrc.cjs
+.prettierrc.js
+package.lock.json
+postcss.config.cjs
+tsconfig.node.json
+vite.config.ts
+
+/dist/*
+/node_modules/*
+/src/main.tsx
+/src/vite-env.d.ts
+/src/types/declarations.d.ts

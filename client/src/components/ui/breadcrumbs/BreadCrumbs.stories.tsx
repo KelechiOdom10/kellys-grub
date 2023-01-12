@@ -3,12 +3,7 @@ import { Breadcrumbs } from "./Breadcrumbs";
 import ChevronRight from "~/components/icons/ChevronRight";
 import { Home } from "~/components/icons/Home";
 
-//👇 This default export determines where your story goes in the story list
 const meta: Meta<typeof Breadcrumbs> = {
-  /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/7.0/react/configure/overview#configure-story-loading
-   * to learn how to generate automatic titles
-   */
   title: "Breadcrumbs",
   component: Breadcrumbs,
 

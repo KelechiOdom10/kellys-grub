@@ -32,8 +32,7 @@ const styles = cva(
   }
 );
 
-export type BadgeProps = HTMLAttributes<HTMLDivElement> &
-  VariantProps<typeof styles>;
+export type BadgeProps = HTMLAttributes<HTMLDivElement> & VariantProps<typeof styles>;
 
 export const Badge: FC<PropsWithChildren<BadgeProps>> = ({
   children,

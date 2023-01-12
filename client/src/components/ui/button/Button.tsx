@@ -10,8 +10,7 @@ const styles = cva(
         primary: "bg-brand text-white focus:ring-brand-300",
         secondary: "bg-secondary text-white focus:ring-secondary-300",
         dark: "bg-dark text-white focus:ring-gray-500",
-        ghost:
-          "bg-white hover:bg-gray-50 text-dark border-gray-200 border focus:ring-offset-0 focus:ring-dark",
+        ghost: "bg-white hover:bg-gray-50 text-dark border-gray-200 border focus:ring-offset-0 focus:ring-dark",
       },
       fullWidth: {
         true: "w-full",
