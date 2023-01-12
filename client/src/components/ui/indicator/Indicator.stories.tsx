@@ -3,12 +3,7 @@ import { Indicator } from "./Indicator";
 import { Button } from "../button";
 import { ShoppingCart } from "~/components/icons/ShoppingCart";
 
-//👇 This default export determines where your story goes in the story list
 const meta: Meta<typeof Indicator> = {
-  /* 👇 The title prop is optional.
-   * See https://storybook.js.org/docs/7.0/react/configure/overview#configure-story-loading
-   * to learn how to generate automatic titles
-   */
   title: "Indicator",
   component: Indicator,
 
