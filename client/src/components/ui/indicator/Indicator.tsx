@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, ReactNode, useMemo } from "react";
+import { FC, HTMLAttributes, ReactNode } from "react";
 import { VariantProps, cva } from "class-variance-authority";
 import { IndicatorPosition, getPositionStyles } from "./Indicator.types";
 
