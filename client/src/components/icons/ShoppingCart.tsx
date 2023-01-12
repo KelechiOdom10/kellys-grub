@@ -1,6 +1,6 @@
-import { SVGComponent } from "~/types";
+import { SVGProps } from "react";
 
-export const ShoppingCart: SVGComponent = ({ width = "18", height = "18", ...props }) => {
+export const ShoppingCart = ({ width = "18", height = "18", ...props }: SVGProps<SVGSVGElement>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,9 +9,9 @@ export const ShoppingCart: SVGComponent = ({ width = "18", height = "18", ...pro
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       {...props}
     >
       <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
