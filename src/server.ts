@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import Cors from "cors";
 import cookieParser from "cookie-parser";
 import express, { Response } from "express";
 import mongoose from "mongoose";
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(passport.initialize());
+app.use(Cors());
 
 mongoose.set("strictQuery", false);
 mongoose
@@ -35,8 +37,8 @@ mongoose
 require("./config/passport");
 
 app.use("/api/auth", authRoute);
-app.use("/api/category", categoryRoute);
-app.use("/api/product", productRoute);
+app.use("/api/categories", categoryRoute);
+app.use("/api/products", productRoute);
 
 // TEST ROUTES
 app.get("/", (_req, res: Response) => {

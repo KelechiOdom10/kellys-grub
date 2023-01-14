@@ -1,13 +1,19 @@
+import { useState } from "react";
+import { Star } from "~/components/icons/Star";
+import { Avatar, AvatarGroup } from "~/components/ui/avatar";
+import { Breadcrumbs } from "~/components/ui/breadcrumbs";
 import { Button } from "~/components/ui/button";
+import { Indicator } from "~/components/ui/indicator";
 import { Input } from "~/components/ui/input";
-import { Indicator } from "./components/ui/indicator";
-import { Breadcrumbs } from "./components/ui/breadcrumbs";
-import { Avatar } from "./components/ui/avatar/Avatar";
-import { Star } from "./components/icons/Star";
-import { AvatarGroup } from "./components/ui/avatar/AvatarGroup";
-import { Logo } from "./components/ui/logo/Logo";
+import { Logo } from "~/components/ui/logo/Logo";
+import { NumberInput } from "~/components/ui/numberInput";
+import { rootRoute } from "./__root";
+import { Link } from "@tanstack/react-router";
+import { LoadingScreen, LoadingIndicator } from "~/components/ui/loading";
+import { NotFound } from "~/components/ui/error";
 
-function App() {
+export const Home = () => {
+  const [value, setValue] = useState(0);
   return (
     <main className="p-4">
       <Button>Let's see</Button>
@@ -73,8 +79,21 @@ function App() {
       </div>
 
       <Logo className="w-10" />
+      <NumberInput value={value} handleInputChange={(val) => setValue(val)} />
+      <Link to="/categories" className="block">
+        ll
+      </Link>
+
+      <Link to="/about">about</Link>
+
+      <LoadingScreen message="Fetching products" />
+      <LoadingIndicator />
+      <NotFound />
     </main>
   );
-}
+};
 
-export default App;
+export const indexRoute = rootRoute.createRoute({
+  path: "/",
+  component: Home,
+});
