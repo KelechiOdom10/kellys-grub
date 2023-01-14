@@ -28,4 +28,12 @@
   input[aria-invalid="true"] {
     @apply border-red-500 text-red-600 focus:border-red-500 focus:ring-red-50;
   }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"] {
+    -webkit-appearance: none;
+    margin: 0;
+    -moz-appearance: textfield !important;
+  }
 }
