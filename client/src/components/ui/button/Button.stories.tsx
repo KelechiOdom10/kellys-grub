@@ -76,3 +76,20 @@ export const IconButton: Story = {
     rightIcon: <ShoppingCart />,
   },
 };
+
+// export const AsLink: Story = {
+//   decorators: [
+//     (Story) => (
+//       <>
+//         <RouterProvider router={router} defaultPreload="intent" />
+//         <Story />
+//       </>
+//     ),
+//   ],
+//   args: {
+//     intent: "primary",
+//     size: "md",
+//     as: "link",
+//     to: "#",
+//   },
+// };
