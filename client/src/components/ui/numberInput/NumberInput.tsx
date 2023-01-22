@@ -31,7 +31,7 @@ export const NumberInput = ({ min = 1, max = 10, value, handleInputChange }: Num
           max={max}
           value={value}
           onChange={(e) => {
-            let value = Number(e.currentTarget.value);
+            let value = e.currentTarget.valueAsNumber;
             if (value <= 0) value = 1;
             handleInputChange(value);
           }}
