@@ -13,10 +13,7 @@ export const getAllProducts = async (
   next: NextFunction
 ) => {
   try {
-    const products = await Product.find({}).populate<{ category: ICategory }>(
-      "category",
-      "name slug"
-    );
+    const products = await Product.find({});
     res.status(200).json({ success: true, data: products });
   } catch (error) {
     next(error);
@@ -30,7 +27,9 @@ export const getProductBySlug = async (
 ) => {
   try {
     const { slug } = req.params;
-    const product = await Product.findOne({ slug });
+    const product = await Product.findOne({ slug }).populate<{
+      category: ICategory;
+    }>("category", "name slug");
 
     if (!product) {
       return next(new ErrorResponse("No product found", 404));
@@ -137,6 +136,24 @@ export const deleteProductById = async (
     );
     await product.remove();
     res.status(204).json({ success: true, data: {} });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getHomePageCollection = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const productsOnSale = await Product.find({ onSale: true }).limit(5);
+    const newAdditions = await Product.find({ onSale: false })
+      .sort({ createdAt: -1 })
+      .limit(5);
+    res
+      .status(200)
+      .json({ success: true, data: { productsOnSale, newAdditions } });
   } catch (error) {
     next(error);
   }
