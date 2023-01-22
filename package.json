@@ -18,6 +18,7 @@
   "author": "Kelechi Odom",
   "license": "ISC",
   "dependencies": {
+    "@headlessui/react": "^1.7.7",
     "bcrypt": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

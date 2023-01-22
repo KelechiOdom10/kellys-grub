@@ -11,11 +11,12 @@ import { rootRoute } from "./__root";
 import { Link } from "@tanstack/react-router";
 import { LoadingScreen, LoadingIndicator } from "~/components/ui/loading";
 import { NotFound } from "~/components/ui/error";
+import { Footer } from "~/components/layouts/footer";
 
 export const Home = () => {
   const [value, setValue] = useState(0);
   return (
-    <main className="p-4">
+    <>
       <Button>Let's see</Button>
       <Input label="Email" helperText="Mad man" required placeholder="Enter valid Email" error="jhjk" />
       <Indicator color="dark" withBorder label="2">
@@ -89,7 +90,8 @@ export const Home = () => {
       <LoadingScreen message="Fetching products" />
       <LoadingIndicator />
       <NotFound />
-    </main>
+      <Footer />
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import { api } from "~/api/apiClient";
-import { Product, Products } from "~/types/product";
+import { ProductDetail, Products } from "~/types/product";
 
 class ProductService {
   async getProducts() {
@@ -13,8 +13,19 @@ class ProductService {
   async getProduct(slug: string) {
     const response = await api.get<{
       success: boolean;
-      data: Product;
+      data: ProductDetail;
     }>(`/products/${slug}`);
+    return response.data;
+  }
+
+  async getHomePageCollection() {
+    const response = await api.get<{
+      success: boolean;
+      data: {
+        productsOnSale: Products;
+        newAdditions: Products;
+      };
+    }>("/products/home");
     return response.data;
   }
 }

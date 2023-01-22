@@ -12,7 +12,10 @@ const styles = cva(
         secondary: "bg-secondary text-white focus:ring-secondary-300",
         "secondary-outline": "bg-transparent text-secondary border-secondary border-2",
         dark: "bg-dark text-white focus:ring-gray-500",
-        ghost: "bg-white hover:bg-gray-50 text-dark border-gray-200 border focus:ring-offset-0 focus:ring-dark",
+        "dark-outline": "bg-transparent text-dark border-dark border-2",
+        white: "bg-white hover:bg-gray-50 text-dark border-gray-200 border focus:ring-offset-0 focus:ring-dark",
+        ghost:
+          "bg-transparent text-dark border-none focus:ring-transparent focus:ring-0 focus:ring-offset-0 focus-visible:ring-dark focus-visible:ring-2",
       },
       fullWidth: {
         true: "w-full",
@@ -24,7 +27,7 @@ const styles = cva(
         sm: "px-3 py-1.5 leading-4" /** For backwards compatibility */,
         md: "h-9 px-4 py-2",
         lg: "h-10 px-5 py-2.5",
-        icon: "flex justify-center min-h-[36px] min-w-[36px]",
+        icon: "flex justify-center min-h-[30px] min-w-[30px]",
       },
       isLoading: {
         true: "opacity-50 cursor-wait",

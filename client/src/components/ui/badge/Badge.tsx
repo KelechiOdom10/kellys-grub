@@ -40,6 +40,7 @@ export const Badge: FC<PropsWithChildren<BadgeProps>> = ({
   size = "md",
   rounded,
   letterCase,
+  className,
   ...props
 }) => {
   return (
@@ -49,6 +50,7 @@ export const Badge: FC<PropsWithChildren<BadgeProps>> = ({
         size,
         letterCase,
         rounded,
+        className,
       })}
       {...props}
     >

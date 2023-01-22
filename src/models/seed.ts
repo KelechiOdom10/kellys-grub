@@ -57,6 +57,7 @@ async function main() {
       price: faker.commerce.price(),
       imageUrl: faker.image.food(),
       category: randomCategoryId,
+      onSale: faker.datatype.boolean(),
     });
 
     await Category.updateOne(

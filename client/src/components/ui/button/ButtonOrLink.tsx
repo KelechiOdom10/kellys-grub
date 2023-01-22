@@ -12,12 +12,12 @@ type ButtonAsButton = BaseProps &
   };
 
 type ButtonAsLink = BaseProps &
-  ComponentProps<typeof Link> & {
+  Partial<ComponentProps<typeof Link>> & {
     as: "link";
   };
 
 type ButtonAsExternal = BaseProps &
-  Omit<ComponentProps<typeof Link>, keyof BaseProps> & {
+  Omit<ComponentProps<"a">, keyof BaseProps> & {
     as: "externalLink";
   };
 

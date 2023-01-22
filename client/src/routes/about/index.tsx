@@ -1,3 +1,4 @@
+import MainLayout from "~/components/layouts/MainLayout";
 import { rootRoute } from "../__root";
 
 export const About = () => {
@@ -6,5 +7,9 @@ export const About = () => {
 
 export const aboutRoute = rootRoute.createRoute({
   path: "/about",
-  component: About,
+  component: () => (
+    <MainLayout>
+      <About />
+    </MainLayout>
+  ),
 });
