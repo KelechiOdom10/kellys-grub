@@ -1,3 +1,5 @@
+import { Category } from "./category";
+
 export type Product = {
   _id: string;
   name: string;
@@ -15,3 +17,7 @@ export type Product = {
 };
 
 export type Products = Product[];
+
+export type ProductDetail = Omit<Product, "category"> & {
+  category: Pick<Category, "_id" | "name" | "slug">;
+};
