@@ -6,9 +6,9 @@ import { Button } from "~/components/ui/button";
 import { Indicator } from "~/components/ui/indicator";
 import { LogoWithText } from "~/components/ui/logo";
 import { navigationLinks } from "./data";
-import { ChevronDown } from "~/components/icons/ChevronDown";
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { buttonStyles } from "~/components/ui/button/Button";
 
 export const Navbar = () => {
   return (
@@ -27,8 +27,6 @@ export const Navbar = () => {
                   <Popover.Button
                     as={Button}
                     intent="ghost"
-                    size="sm"
-                    className="inline-flex items-center border-none py-2 px-2 text-[15px] font-bold focus:ring-dark focus:ring-offset-0"
                     leftIcon={link.icon && <link.icon className="h-4.5 w-4.5 -mr-1" />}
                   >
                     {link.name}
@@ -52,7 +50,7 @@ export const Navbar = () => {
                                 to={item.href}
                                 params={{}}
                                 search={{}}
-                                className="focus-visible:ring-orange-500 -m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-neutral-550 focus:outline-none focus-visible:ring focus-visible:ring-opacity-50 "
+                                className="focus-visible:ring-orange-500 -m-3 flex items-center rounded-lg p-2 text-base transition duration-150 ease-in-out hover:bg-neutral-550 focus:outline-none focus-visible:ring focus-visible:ring-opacity-50 "
                               >
                                 <img
                                   src={item.image}
@@ -76,18 +74,8 @@ export const Navbar = () => {
           }
 
           return (
-            <Link
-              key={link.name}
-              to={link.href}
-              className="flex items-center rounded-md py-0.5 px-2 text-[15px] font-bold"
-              params={{}}
-              search={{}}
-            >
-              {link.icon && <link.icon className="mr-2 h-5 w-5" />}
+            <Link key={link.name} to={link.href} className={buttonStyles({ intent: "ghost", size: "sm" })}>
               {link.name}
-              {link.children && (
-                <Button size="icon" intent="ghost" rightIcon={<ChevronDown className="w-4" />} className="self-end" />
-              )}
             </Link>
           );
         })}
@@ -95,9 +83,9 @@ export const Navbar = () => {
 
       <div className="flex items-center space-x-4">
         <Button size="icon" intent="ghost" rightIcon={<Search className="h-5 w-5 font-bold" />} />
-        <Button as="link" size="sm" intent="dark" to="/login" className="hidden sm:block">
+        <Link to="#" className={buttonStyles({ intent: "dark", class: "hidden sm:block" })}>
           Login
-        </Button>
+        </Link>
         <Indicator label={1} color="dark">
           <Button size="icon" intent="white" rightIcon={<ShoppingCart />} />
         </Indicator>

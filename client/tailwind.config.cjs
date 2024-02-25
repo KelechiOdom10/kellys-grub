@@ -7,8 +7,8 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      sans: ["'Lato', sans-serif", defaultTheme.fontFamily.sans],
-      heading: ["Red Hat Display', sans-serif", defaultTheme.fontFamily.sans],
+      sans: ["'Lato', sans-serif", ...defaultTheme.fontFamily.sans],
+      heading: ["Red Hat Display', sans-serif", ...defaultTheme.fontFamily.sans],
     },
     colors: {
       transparent: "transparent",

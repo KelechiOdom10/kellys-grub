@@ -18,6 +18,7 @@ export const NumberInput = ({ min = 1, max = 10, value, handleInputChange }: Num
       >
         <Button
           size="icon"
+          intent="ghost"
           className="m-0.5 bg-transparent text-dark hover:bg-gray-50 focus:ring-0"
           onClick={() => handleInputChange(value - 1)}
           disabled={value <= min}
@@ -38,6 +39,7 @@ export const NumberInput = ({ min = 1, max = 10, value, handleInputChange }: Num
         />
         <Button
           size="icon"
+          intent="ghost"
           className="m-0.5 bg-transparent text-dark hover:bg-gray-50 focus:ring-0"
           onClick={() => handleInputChange(value + 1)}
           disabled={value >= 10}

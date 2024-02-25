@@ -1,7 +1,7 @@
 import { Logo } from "~/components/ui/logo";
 import { companySection, contactSectionFooter, openingHoursSection, socialLinksFooter } from "./data";
-import { Button } from "~/components/ui/button";
 import { Link } from "@tanstack/react-router";
+import { buttonStyles } from "~/components/ui/button/Button";
 
 export const Footer = () => {
   return (
@@ -11,9 +11,19 @@ export const Footer = () => {
           <Logo className="h-16 md:h-20" />
           <div className="flex space-x-3">
             {socialLinksFooter.map((link) => (
-              <Button key={link.name} as="externalLink" intent="ghost" size="icon" href={link.href}>
-                {<link.icon className="scale-110" />}
-              </Button>
+              <a
+                key={link.name}
+                className={buttonStyles({
+                  intent: "ghost",
+                  size: "icon",
+                  class: "hover:bg-neutral-900",
+                })}
+                target="_blank"
+                rel="noopener noreferrer"
+                href={link.href}
+              >
+                <link.icon className="scale-110" />
+              </a>
             ))}
           </div>
           <p className="hidden w-11/12 text-gray-500 md:block">{`© Kelly's Grub | ${new Date().getFullYear()}. All rights reserved`}</p>

@@ -1,16 +1,12 @@
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, createRoute } from "@tanstack/react-router";
 import { rootRoute } from "../__root";
-import MainLayout from "~/components/layouts/MainLayout";
 
 export const Categories = () => {
-  return (
-    <MainLayout>
-      <Outlet />
-    </MainLayout>
-  );
+  return <Outlet />;
 };
 
-export const categoriesRoute = rootRoute.createRoute({
+export const categoriesRoute = createRoute({
+  getParentRoute: () => rootRoute,
   path: "categories",
   component: Categories,
 });
