@@ -1,13 +1,9 @@
-import { Link, useMatch } from "@tanstack/react-router";
+import { Link, createRoute } from "@tanstack/react-router";
 import { categoriesRoute } from ".";
 import categoryService from "~/services/categoryService";
 
 export const CategoryHome = () => {
-  const {
-    loaderData: { data },
-  } = useMatch(categoriesIndexRoute.id);
-
-  console.log(data);
+  const { data } = categoriesIndexRoute.useLoaderData();
   return (
     <>
       <div>Categories </div>
@@ -18,7 +14,8 @@ export const CategoryHome = () => {
   );
 };
 
-export const categoriesIndexRoute = categoriesRoute.createRoute({
+export const categoriesIndexRoute = createRoute({
+  getParentRoute: () => categoriesRoute,
   path: "/",
   component: CategoryHome,
   loader: categoryService.getCategories,

@@ -12,10 +12,8 @@
     "lint": "eslint . --cache --ext .ts,.tsx"
   },
   "dependencies": {
-    "@tanstack/react-router": "^0.0.1-beta.35",
-    "axios": "^1.2.2",
-    "class-variance-authority": "^0.4.0",
-    "embla-carousel-react": "^7.0.5",
+    "@tanstack/react-router": "^1.16.0",
+    "@tanstack/router-devtools": "^1.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

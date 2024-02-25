@@ -1,12 +1,8 @@
 import { NotFound } from "~/components/ui/error/NotFound";
 import { rootRoute } from "../__root";
-import MainLayout from "~/components/layouts/MainLayout";
+import { NotFoundRoute } from "@tanstack/react-router";
 
-export const notFoundRoute = rootRoute.createRoute({
-  path: "*",
-  component: () => (
-    <MainLayout>
-      <NotFound />
-    </MainLayout>
-  ),
+export const notFoundRoute = new NotFoundRoute({
+  getParentRoute: () => rootRoute,
+  component: () => <NotFound />,
 });
