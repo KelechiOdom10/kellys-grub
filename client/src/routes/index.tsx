@@ -7,14 +7,16 @@ import { Indicator } from "~/components/ui/indicator";
 import { Input } from "~/components/ui/input";
 import { Logo } from "~/components/ui/logo/Logo";
 import { NumberInput } from "~/components/ui/numberInput";
-import { rootRoute } from "./__root";
-import { Link } from "@tanstack/react-router";
+import { Link, createRoute } from "@tanstack/react-router";
 import { LoadingScreen, LoadingIndicator } from "~/components/ui/loading";
-import { NotFound } from "~/components/ui/error";
-import { Footer } from "~/components/layouts/footer";
+import productService from "~/services/productService";
+import { ProductCard } from "~/components/domain/product";
+import { rootRoute } from "./__root";
 
 export const Home = () => {
   const [value, setValue] = useState(0);
+  const { data } = indexRoute.useLoaderData();
+
   return (
     <>
       <Button>Let's see</Button>
@@ -78,6 +80,11 @@ export const Home = () => {
           ]}
         />
       </div>
+      <div>
+        {data.productsOnSale.map((product) => (
+          <ProductCard key={product._id} product={product} />
+        ))}
+      </div>
 
       <Logo className="w-10" />
       <NumberInput value={value} handleInputChange={(val) => setValue(val)} />
@@ -89,13 +96,13 @@ export const Home = () => {
 
       <LoadingScreen message="Fetching products" />
       <LoadingIndicator />
-      <NotFound />
-      <Footer />
     </>
   );
 };
 
-export const indexRoute = rootRoute.createRoute({
+export const indexRoute = createRoute({
+  getParentRoute: () => rootRoute,
   path: "/",
   component: Home,
+  loader: async () => productService.getHomePageCollection(),
 });
