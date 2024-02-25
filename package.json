@@ -9,8 +9,8 @@
   },
   "scripts": {
     "server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"cd client && npm run dev\"",
+    "client": "pnpm start --prefix client",
+    "dev": "concurrently \"pnpm run server\" \"cd client && pnpm run dev\"",
     "seed": "ts-node src/models/seed.ts ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
