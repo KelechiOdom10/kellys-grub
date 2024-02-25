@@ -2,11 +2,12 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Breadcrumbs } from "./Breadcrumbs";
 import ChevronRight from "~/components/icons/ChevronRight";
 import { Home } from "~/components/icons/Home";
+import { storyRouterDecorator } from "~/utils/storybook.router";
 
 const meta: Meta<typeof Breadcrumbs> = {
   title: "Breadcrumbs",
   component: Breadcrumbs,
-
+  decorators: storyRouterDecorator,
   argTypes: {
     transparent: {
       type: "boolean",
