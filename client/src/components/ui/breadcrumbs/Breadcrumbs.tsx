@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { FC, HTMLAttributes, ReactNode } from "react";
 
 type Props = HTMLAttributes<HTMLElement> & {
@@ -19,8 +20,8 @@ export const Breadcrumbs: FC<Props> = ({ transparent, items, separator = "/", ..
           const isLast = index === items.length - 1;
           return (
             <li key={index} className="inline-flex items-center">
-              <a
-                href={item.href}
+              <Link
+                to={item.href}
                 className={`text-xs md:text-[15px] ${
                   isLast
                     ? "cursor-default font-normal text-gray-500 hover:text-gray-500"
@@ -28,7 +29,7 @@ export const Breadcrumbs: FC<Props> = ({ transparent, items, separator = "/", ..
                 }`}
               >
                 {item.title}
-              </a>
+              </Link>
 
               <span className={`mx-3 h-auto font-medium text-gray-400 ${isLast && "hidden"}`}>{separator}</span>
             </li>

@@ -1,4 +1,5 @@
-import { Button } from "../button";
+import { Link } from "@tanstack/react-router";
+import { buttonStyles } from "../button/Button";
 
 type NotFoundProps = {
   message?: string;
@@ -15,19 +16,33 @@ export const NotFound = ({ message = "Oops this page couldn't be found" }: NotFo
               loading="eager"
               src="/images/tomato.svg"
               alt="Tomato SVG"
-              className="lg:max-h-5/6 max-h-20 w-full self-center object-cover pl-4 md:max-h-40 md:pl-8"
+              className="lg:max-h-5/6 max-h-20 w-full self-center object-cover pl-4 md:max-h-32 md:pl-8"
             />
           </span>
           4
         </h2>
         <div className="flex flex-wrap justify-center space-x-0 md:space-x-4">
-          <Button intent="secondary" className="mb-4 w-full md:w-auto" size="lg" as="link" to="/">
+          <Link
+            className={buttonStyles({
+              intent: "secondary",
+              size: "lg",
+              class: "mb-4 w-full md:w-auto",
+            })}
+            to="/"
+          >
             Go to Homepage
-          </Button>
+          </Link>
 
-          <Button intent="secondary-outline" className="mb-4 w-full md:w-auto" size="lg" as="link" to="/contact">
+          <Link
+            className={buttonStyles({
+              intent: "secondary-outline",
+              size: "lg",
+              class: "mb-4 w-full md:w-auto",
+            })}
+            to="/"
+          >
             Contact Us
-          </Button>
+          </Link>
         </div>
       </div>
     </div>
